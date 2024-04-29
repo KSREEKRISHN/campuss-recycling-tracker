@@ -1,0 +1,48 @@
+class User:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+    def login(self, entered_username, entered_password):
+        return self.username == entered_username and self.password == entered_password
+class RecyclingData:
+    def __init__(self):
+        self.data = []
+    def add_data(self, item, quantity):
+        self.data.append({"item": item, "quantity": quantity})
+    def get_total_recycled(self):
+        return sum(item["quantity"] for item in self.data)
+    def get_recycling_report(self):
+        report = "Recycling Report:\n"
+        for item in self.data:
+            report += f"- {item['quantity']} {item['item']}\n"
+        report += f"Total recycled: {self.get_total_recycled()} items"
+        return report
+class RecyclingTracker:
+    def __init__(self):
+        self.users = {}
+        self.recycling_data = RecyclingData()
+    def register_user(self, username, password):
+        if username in self.users:
+            print("Username already exists. Please choose another one.")
+        else:
+            self.users[username] = User(username, password)
+            print("User registered successfully.")
+    def login_user(self, username, password):
+        if username in self.users:
+            user = self.users[username]
+            if user.login(username, password):
+                print("Login successful.")
+                return True
+            else:
+                print("Incorrect password.")
+        else:
+            print("Username not found.")
+        return False
+tracker = RecyclingTracker()
+tracker.register_user("user1", "password1")
+tracker.register_user("user2", "password2")
+tracker.login_user("user1", "password1")
+tracker.login_user("user2", "wrong_password")
+tracker.recycling_data.add_data("Plastic bottles", 10)
+tracker.recycling_data.add_data("Newspapers", 5)
+print(tracker.recycling_data.get_recycling_report())
